@@ -1,145 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Steve Shack - Profile</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Steve Shack — Lighting Design</title>
+  <meta name="description" content="Minimal lighting design portfolio for Steve Shack." />
+  <style>
+    /* ===== Color System ===== */
+    :root{
+      --cream: #f5f0e6;    /* primary */
+      --olive: #3b1f47;    /* accent */
+      --eggplant: #6B8E23; /* accent */
+      --mahogany: #4a1f1a; /* darker accent */
+      --ink: #241c24;      /* text on light */
+      --ink-soft: #3a313a; 
+      --paper: var(--cream);
+      --link: var(--eggplant);
+      --link-hover: #51255a; /* eggplant+ */
+    }
 
-    <!-- Material Web 1.0 -->
-    <script type="module" src="https://esm.run/@material/web/all"></script>
+    /* ===== Base ===== */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+    }
+    img{ max-width: 100%; display: block; height: auto; }
+    a{ color: var(--link); text-decoration: none; }
+    a:hover, a:focus{ color: var(--link-hover); text-decoration: underline; }
 
-    <style>
-      :root {
-        /* Theme Colors */
-        --md-sys-color-primary: chartreuse;
-        --md-sys-color-on-primary: #4b0082; /* Eggplant-like indigo text */
-        --md-sys-color-secondary: #4b0082;
-        --md-sys-color-on-secondary: #ffffff;
-        --md-sys-color-background: #1a1a1a;
-        --md-sys-color-on-background: #f0f0f0;
-        --md-sys-color-surface: #2a2a2a;
-        --md-sys-color-on-surface: #f0f0f0;
-      }
+    .container{ width: min(1100px, 92vw); margin-inline: auto; }
 
-      body {
-        margin: 0;
-        font-family: Roboto, Arial, sans-serif;
-        background: var(--md-sys-color-background);
-        color: var(--md-sys-color-on-background);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-      }
+    /* ===== Skip link ===== */
+    .skip-link{ position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden; }
+    .skip-link:focus{ left:1rem; top:1rem; width:auto; height:auto; background:#fff; padding:.5rem .75rem; border:2px solid var(--olive); z-index:999; }
 
-      header {
-        width: 100%;
-        background: var(--md-sys-color-primary);
-        color: var(--md-sys-color-on-primary);
-        padding: 1.5rem;
-        text-align: center;
-        font-size: 1.8rem;
-        font-weight: bold;
-      }
+    /* ===== Top Bar / Branding ===== */
+    header.topbar{
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in lab, var(--paper) 96%, white 4%);
+      border-bottom: 1px solid color-mix(in lab, var(--mahogany) 20%, transparent);
+      backdrop-filter: saturate(140%) blur(6px);
+    }
+    .brand{
+      display:flex; align-items:center; gap:.75rem; padding:.75rem 0;
+    }
+    .brand-mark{ width:14px; height:14px; border-radius:3px; background: linear-gradient(135deg, var(--olive), var(--eggplant)); box-shadow:0 0 0 2px color-mix(in lab, var(--mahogany) 25%, transparent) inset; }
+    .brand h1{ font-size:1.05rem; letter-spacing:.04em; margin:0; font-weight:600; color: var(--mahogany); }
 
-      main {
-        max-width: 700px;
-        padding: 2rem;
-        width: 100%;
-      }
+    /* ===== Nav ===== */
+    nav ul{ list-style:none; display:flex; gap:.75rem; padding:0; margin:0; flex-wrap:wrap; }
+    nav a{
+      display:inline-block; padding:.5rem .75rem; border-radius:999px;
+      border: 1px solid color-mix(in lab, var(--eggplant) 22%, transparent);
+      background: color-mix(in lab, var(--paper) 92%, white 8%);
+      font-weight:500;
+    }
+    nav a[aria-current="page"], nav a.active{
+      background: color-mix(in lab, var(--olive) 18%, var(--paper));
+      border-color: color-mix(in lab, var(--olive) 35%, transparent);
+      color: color-mix(in lab, var(--mahogany) 40%, black 60%);
+    }
 
-      md-filled-card {
-        width: 100%;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        background: var(--md-sys-color-surface);
-      }
+    .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
 
-      .profile-name {
-        font-size: 2rem;
-        font-weight: bold;
-        color: var(--md-sys-color-primary);
-        text-align: center;
-      }
+    /* ===== Hero/Header image ===== */
+    .hero{
+      position: relative; isolation:isolate;
+      background: var(--eggplant);
+      color: #fff;
+    }
+    .hero-media{
+      position: relative; aspect-ratio: 16 / 6; width: 100%; overflow:hidden;
+      background: linear-gradient(135deg, var(--eggplant), var(--mahogany));
+    }
+    .hero-media img{ width:100%; height:100%; object-fit:cover; filter: saturate(95%) contrast(105%); opacity:.88; }
+    .hero-overlay{
+      position:absolute; inset:0; background: linear-gradient( to bottom, rgba(0,0,0,.25), rgba(0,0,0,.55) );
+    }
+    .hero-content{
+      position:absolute; inset: 0; display:grid; place-items:end start; padding: clamp(1rem, 4vw, 2.5rem);
+    }
+    .hero h2{ margin:0; font-size: clamp(1.5rem, 2.5vw + 1rem, 2.25rem); font-weight:600; }
+    .hero p{ margin:.35rem 0 0; opacity:.9; }
 
-      .detail-section {
-        margin-top: 1.5rem;
-      }
+    /* ===== Sections ===== */
+    section{ padding: 2.25rem 0; scroll-margin-top: 5.5rem; }
+    section h3{ font-size: 1.25rem; margin: 0 0 .5rem; color: var(--mahogany); }
+    .subtle{ color: var(--ink-soft); }
 
-      .detail-header {
-        font-size: 1.3rem;
-        font-weight: bold;
-        margin-bottom: 0.3rem;
-        padding: 0.4rem 0.6rem;
-        border-radius: 6px;
-        display: inline-block;
-      }
+    /* ===== Home ===== */
+    .pill{
+      display:inline-block; padding:.35rem .6rem; border-radius:999px; border:1px solid color-mix(in lab, var(--mahogany) 25%, transparent);
+      background: color-mix(in lab, var(--olive) 12%, var(--paper));
+      font-size:.9rem; margin-right:.4rem; white-space:nowrap; 
+    }
 
-      .chartreuse {
-        background: var(--md-sys-color-primary);
-        color: var(--md-sys-color-on-primary);
-      }
+    /* ===== Photos Grid ===== */
+    .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap: .8rem; }
+    .photo-card{ grid-column: span 4; background:#fff; border-radius:12px; overflow:hidden; border:1px solid color-mix(in lab, var(--eggplant) 18%, transparent); }
+    .photo-card figure{ margin:0; }
+    .photo-card img{ aspect-ratio: 4 / 3; width:100%; object-fit:cover; }
+    .photo-card figcaption{ padding:.65rem .8rem; font-size:.95rem; color: var(--ink-soft); }
+    @media (max-width: 900px){ .photo-card{ grid-column: span 6; } }
+    @media (max-width: 640px){ .photo-card{ grid-column: span 12; } }
 
-      .eggplant {
-        background: var(--md-sys-color-secondary);
-        color: var(--md-sys-color-on-secondary);
-      }
+    /* ===== Resume ===== */
+    .resume{
+      display:grid; grid-template-columns: 1.2fr 2fr; gap:1.25rem;
+      border:1px solid color-mix(in lab, var(--eggplant) 15%, transparent);
+      border-radius:14px; padding:1rem; background:color-mix(in lab, var(--paper) 92%, white 8%);
+    }
+    .resume strong{ color: var(--eggplant); }
+    .resume .cta{
+      display:inline-block; margin-top:.5rem; padding:.55rem .8rem; border-radius:10px;
+      background: color-mix(in lab, var(--olive) 24%, var(--paper));
+      border:1px solid color-mix(in lab, var(--olive) 38%, transparent);
+      color: color-mix(in lab, var(--mahogany) 40%, black 60%);
+      font-weight:600;
+    }
+    @media (max-width: 860px){ .resume{ grid-template-columns: 1fr; } }
 
-      .detail-text {
-        margin-left: 0.3rem;
-        font-size: 1.1rem;
-      }
+    /* ===== Contact ===== */
+    form{ display:grid; gap:.75rem; max-width:680px; }
+    label{ font-weight:600; color: var(--mahogany); }
+    input, textarea{
+      width:100%; padding:.7rem .8rem; border-radius:10px; border:1px solid color-mix(in lab, var(--eggplant) 20%, transparent);
+      background:#fff; color: var(--ink);
+    }
+    button{
+      justify-self:start; padding:.7rem 1rem; border-radius:12px; border:1px solid color-mix(in lab, var(--eggplant) 28%, transparent);
+      background: linear-gradient( to bottom right, color-mix(in lab, var(--olive) 30%, var(--paper)), color-mix(in lab, var(--eggplant) 12%, var(--paper)) );
+      color: color-mix(in lab, var(--mahogany) 40%, black 60%);
+      font-weight:700; cursor:pointer;
+    }
+    button:hover{ filter: brightness(1.02) saturate(1.02); }
 
-      footer {
-        margin-top: auto;
-        padding: 1rem;
-        text-align: center;
-        font-size: 0.9rem;
-        color: var(--md-sys-color-on-surface);
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      Steve Shack - Profile
-    </header>
+    /* ===== Footer ===== */
+    footer{
+      margin-top: 2rem; padding: 1.25rem 0; border-top:1px solid color-mix(in lab, var(--mahogany) 22%, transparent);
+      background: color-mix(in lab, var(--paper) 96%, white 4%);
+      color: var(--ink-soft); font-size:.95rem;
+    }
 
-    <main>
-      <md-filled-card>
-        <div class="profile-name">Steve Shack</div>
-        <p>
-          Welcome to my profile page. This site uses the Material Web 1.0
-          framework with a custom color scheme inspired by
-          <strong>Chartreuse</strong> and <strong>Eggplant</strong>.
-        </p>
+    /* Reduced motion */
+    @media (prefers-reduced-motion: no-preference){
+      html{ scroll-behavior: smooth; }
+      nav a{ transition: background .2s ease, color .2s ease, border-color .2s ease; }
+      button{ transition: filter .15s ease; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-        <!-- Profession -->
-        <div class="detail-section">
-          <span class="detail-header chartreuse">Profession</span>
-          <span class="detail-text">Lighting Design</span>
+  <!-- ===== Top Navigation ===== -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand" aria-label="Site brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h1>Steve Shack — Lighting Design</h1>
+      </div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#photos">Photos</a></li>
+          <li><a href="#resume">Resume</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Header / Hero with image ===== -->
+  <section class="hero" aria-labelledby="site-intro">
+    <div class="hero-media">
+      <!-- Replace the src with your preferred header photo -->
+      <img src="https://images.unsplash.com/photo-1511963212804-92e2ac8cd335?q=80&w=1600&auto=format&fit=crop" alt="Atmospheric stage lights cutting through haze." />
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content container">
+        <div>
+          <h2 id="site-intro">Minimal • Intentional • Luminous</h2>
+          <p class="subtle">Concerts, theatre, and immersive environments — crafted with restraint and warmth.</p>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Location -->
-        <div class="detail-section">
-          <span class="detail-header eggplant">Location</span>
-          <span class="detail-text">Cleveland, OH</span>
+  <main id="main" class="container">
+    <!-- ===== Home ===== -->
+    <section id="home" aria-labelledby="home-title">
+      <h3 id="home-title">Home</h3>
+      <p class="subtle">I’m a Cleveland-based lighting designer focused on clean lines, cueable emotion, and legible texture. My work favors negative space, slow transitions, and color stories grounded in nature.</p>
+      <div aria-label="Tags" style="margin-top:.5rem;">
+        <span class="pill">Theatre</span>
+        <span class="pill">Opera</span>
+        <span class="pill">Concert</span>
+        <span class="pill">Installations</span>
+        <span class="pill">grandMA3 • ETC Eos</span>
+      </div>
+    </section>
+
+    <!-- ===== Photos ===== -->
+    <section id="photos" aria-labelledby="photos-title">
+      <h3 id="photos-title">Photos</h3>
+      <div class="grid" role="list">
+        <!-- Replace images with your own portfolio shots -->
+        <article class="photo-card" role="listitem">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=1200&auto=format&fit=crop" alt="Cool blue backlight on a performer with haze." />
+            <figcaption>Backlight study — concert cue 34</figcaption>
+          </figure>
+        </article>
+        <article class="photo-card" role="listitem">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop" alt="Warm amber frontlight on a vocalist." />
+            <figcaption>Warm key — ballad look</figcaption>
+          </figure>
+        </article>
+        <article class="photo-card" role="listitem">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop" alt="Theatre scene with side light and texture." />
+            <figcaption>Texture + sidelight — scene ii</figcaption>
+          </figure>
+        </article>
+        <article class="photo-card" role="listitem">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1521334726092-b509a19597a1?q=80&w=1200&auto=format&fit=crop" alt="Haze and beams creating architecture." />
+            <figcaption>Architecture in haze</figcaption>
+          </figure>
+        </article>
+        <article class="photo-card" role="listitem">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1200&auto=format&fit=crop" alt="Color story with complementary palette." />
+            <figcaption>Color story — olive × eggplant</figcaption>
+          </figure>
+        </article>
+        <article class="photo-card" role="listitem">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1518544801976-3e7071eac6f8?q=80&w=1200&auto=format&fit=crop" alt="Silhouettes against a saturated wash." />
+            <figcaption>Silhouette wash</figcaption>
+          </figure>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Resume ===== -->
+    <section id="resume" aria-labelledby="resume-title">
+      <h3 id="resume-title">Resume</h3>
+      <div class="resume">
+        <div>
+          <p><strong>Profession:</strong> Lighting Design</p>
+          <p><strong>Location:</strong> Cleveland, OH</p>
+          <p><strong>Education:</strong> BFA Theatre Design</p>
+          <a class="cta" href="#" aria-disabled="true" title="Replace with your PDF link">Download PDF (coming soon)</a>
         </div>
-
-        <!-- Education -->
-        <div class="detail-section">
-          <span class="detail-header chartreuse">Education</span>
-          <span class="detail-text">BFA Theatre Design</span>
+        <div>
+          <p><strong>Selected Credits</strong></p>
+          <ul>
+            <li><em>Opera Title</em> — LD, Summer Festival</li>
+            <li><em>Musical Title</em> — LD, Regional</li>
+            <li><em>Play Title</em> — ALD, Repertory</li>
+            <li><em>Concert Series</em> — LD, Seasonal</li>
+          </ul>
+          <p class="subtle">Lighting systems: ETC Eos family, grandMA3; drafting in Vectorworks Spotlight; visualizers: Capture, MA3D. Comfortable with networked control, Art-Net/sACN, and timecode workflows.</p>
         </div>
+      </div>
+    </section>
 
-        <md-filled-button>Learn More</md-filled-button>
-      </md-filled-card>
-    </main>
+    <!-- ===== Contact ===== -->
+    <section id="contact" aria-labelledby="contact-title">
+      <h3 id="contact-title">Contact</h3>
+      <p class="subtle">For inquiries, collaborations, or availability, send a note:</p>
+      <form name="contact" method="post" onsubmit="event.preventDefault(); alert('Thanks! Replace this with your form endpoint.');">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" required />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
 
-    <footer>
-      © 2025 Steve Shack
-    </footer>
-  </body>
+  <footer>
+    <div class="container">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+        <span>© <span id="year"></span> Steve Shack</span>
+        <span>Palette: <strong>Cream</strong> • <strong>Olive</strong> • <strong>Eggplant</strong> • <strong>Mahogany</strong></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Active link handling + dynamic title per visible section
+    const navLinks = [...document.querySelectorAll('nav a')];
+    const sections = [...document.querySelectorAll('main section')];
+
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id = e.target.id;
+          navLinks.forEach(a=>{
+            a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
+            a.setAttribute('aria-current', a.classList.contains('active') ? 'page' : 'false');
+          });
+          if(id){ document.title = `${id.charAt(0).toUpperCase() + id.slice(1)} — Steve Shack`; }
+        }
+      });
+    }, { rootMargin: '-50% 0px -45% 0px', threshold: 0.01 });
+
+    sections.forEach(s=> io.observe(s));
+
+    // Current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
-
