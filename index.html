@@ -15,6 +15,10 @@
     navigation {
       width: 2rem;
     }
+    content {
+      display: grid;
+      grid-auto-flow: row;
+    }
   </style>
 </head>
 <body>
@@ -24,15 +28,17 @@
     <br>
     <br>
   </div>
-  <navigation>
+  <div id="content">  
+    <navigation>
       <a>Home</a>
       <a>About</a>
       <a>Portfolio</a>
       <a>Resume</a>
       <a>Contact</a>
-  </navigation>
-  <div id="billboard">
+    </navigation>
+    <div id="billboard">
       <img src="path_to_image.jpg">
+    </div>
   </div>
 </body>
 </html>
