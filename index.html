@@ -6,20 +6,27 @@
   <title>Steve Shack — Lighting Design</title>
   <meta name="description" content="Minimal lighting design portfolio for Steve Shack." />
   <style>
-    * { 
-       font-family: "sans-serif";
-    }
-    body {
+    * {
+        font-family: sans-serif;
+      }
       
-    }
-    content {
-      display: flex;
-      flex-direction: row;
-    }
-    navigation {
-      display: grid;
-      width: 2rem;
-    }
+      .content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 2rem;
+      }
+      
+      navigation {
+        display: flex;
+        flex-direction: column;
+        width: 120px;
+      }
+      
+      img {
+        max-width: 400px;
+        height: auto;
+      }
   </style>
 </head>
 <body>
@@ -28,14 +35,18 @@
     <h2>Lighting Designer | EOS Systems</h2>
     <br>
     <br>
-  </div>  
-  <navigation>
+  </div>
+
+  <div class="content">
+    <navigation>
       <a href="#">Home</a>
       <a href="#">About</a>
       <a href="#">Portfolio</a>
       <a href="#">Resume</a>
       <a href="#">Contact</a>
-   </navigation>
-   <img src="path_to_image.jpg">
+    </navigation>
+
+    <img src="path_to_image.jpg" alt="Portfolio image">
+  </div>
 </body>
 </html>
